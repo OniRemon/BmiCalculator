@@ -3,6 +3,7 @@ package com.example.bmicalculator
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -20,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import com.example.bmicalculator.ui.theme.BmiCalculatorTheme
 
 class MainActivity : ComponentActivity() {
+    private val viewModel by viewModels<MainViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -40,21 +42,21 @@ class MainActivity : ComponentActivity() {
                         )
                         Spacer(modifier = Modifier.height(30.dp))
                         PinkLabeledTextField(
-                            value = "",
-                            onValueChange = {},
+                            value = viewModel.height,
+                            onValueChange = {viewModel.height = it},
                             label = "身長(cm)",
                             placeholder = "170"
                         )
                         Spacer(modifier = Modifier.height(20.dp))
                         PinkLabeledTextField(
-                            value = "",
-                            onValueChange = {},
+                            value = viewModel.weight,
+                            onValueChange = {viewModel.weight = it},
                             label = "体重(kg)",
                             placeholder = "65"
                         )
                         Spacer(modifier = Modifier.height(30.dp))
                         Button(
-                            onClick = { /*TODO*/ },
+                            onClick = { viewModel.calculatorBmi() },
                             modifier = Modifier.fillMaxWidth(),
                             colors = ButtonDefaults.buttonColors(
                                 backgroundColor = Color(0xFFF85F6A)
@@ -69,7 +71,7 @@ class MainActivity : ComponentActivity() {
                         }
                         Spacer(modifier = Modifier.height(20.dp))
                         Text(
-                            text = "あなたのBMIは00.0です",
+                            text = "あなたのBMIは${viewModel.bmi}です",
                             modifier = Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Center,
                             color = Color.Gray,
